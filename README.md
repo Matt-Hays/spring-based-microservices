@@ -90,6 +90,7 @@ git submodule update --init --recursive
 │── point-of-sale-service/       # POS system microservice
 │── service-discovery/           # Eureka service discovery server
 │── gateway-server/              # API gateway / request routing
+│── gatling-maven-plugin-demo-java-main/  # Gatling stress/performance tests
 │── submission-artifacts/        # Documentation and submission files
 │── docker-compose.yml           # Docker Compose setup for running the system
 ```
@@ -117,7 +118,7 @@ mvn clean package spring-boot:build-image -DskipTests
 
 ## Running the Application
 
-The services are designed to be run as Docker containers. Use the following command to start all services together:
+The system is designed to run as Docker containers orchestrated with Docker Compose. Use the following command to start all services together:
 
 ```bash
 CONFIG_PORT=8071 INVENTORY_DB_PORT=5432 LOYALTY_DB_PORT=5433 POS_DB_PORT=5434 \
@@ -181,6 +182,10 @@ For individual services, navigate to the service directory and run:
 cd inventory-service
 mvn test
 ```
+
+A Postman collection exists in **`submission-artifacts/`** for REST API executions.
+
+Example Gatling tests are included in `gatling-maven-plugin-demo-java-main/` for performance and load testing.
 
 ---
 
