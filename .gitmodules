@@ -7,9 +7,6 @@
 [submodule "point-of-sale-service"]
 	path = point-of-sale-service
 	url = git@github.com:Matt-Hays/point-of-sale-service.git
-[submodule "csi-5347-course-project-security"]
-	path = csi-5347-course-project-security
-	url = git@github.com:Matt-Hays/csi-5347-course-project-security.git
 [submodule "configuration-server"]
 	path = configuration-server
 	url = git@github.com:Matt-Hays/configuration-server.git
