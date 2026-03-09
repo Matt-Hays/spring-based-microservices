@@ -1,6 +1,6 @@
 # CSI5347 Distributed Systems Course Project
 
-This project is a distributed systems implementation for the CSI 5347 course. It consists of multiple microservices that interact through REST APIs and shared configurations. The system includes an **Inventory Service**, a **Loyalty Program Service**, and a **Point of Sale (POS) Service**, all managed via a **Spring Cloud Config Server**. The project is containerized using **Docker** and can be orchestrated through **Docker Compose** for testing and deployment.
+This project is a distributed systems implementation for the CSI 5347 course. It consists of multiple microservices that interact through REST APIs and shared configurations. The system includes an **Inventory Service**, a **Loyalty Program Service**, a **Point of Sale (POS) Service**, **service discovery with Eureka**, centralized routing through a **Gateway Server**, and authentication/authorization using **Keycloak**. The project is containerized using **Docker** and can be orchestrated through **Docker Compose** for testing and deployment.
 
 ---
 
@@ -13,7 +13,7 @@ This project is a distributed systems implementation for the CSI 5347 course. It
 - [Running the Application](#running-the-application)
 - [Configuration Management](#configuration-management)
 - [Testing](#testing)
-- [Planned Features](#planned-features)
+- [Observability and Security](#observability-and-security)
 
 ---
 
@@ -22,32 +22,32 @@ This project is a distributed systems implementation for the CSI 5347 course. It
 This project implements a microservices-based distributed system with the following components:
 
 - **Configuration Server (`configuration-server/`)**
-
   - A Spring Cloud Config Server that centralizes configuration management.
   - Loads configuration from a separate repository located in `configuration-repository/`.
 
-- **Inventory Service (`inventory-service/`)**
+- **Configuration Repository (`configuration-repository/`)**
+  - Stores the externalized configuration files used by the Config Server.
 
+- **Service Discovery (`service-discovery/`)**
+  - Provides service registration and discovery using **Spring Cloud Eureka**.
+
+- **Gateway Server (`gateway-server/`)**
+  - Serves as the entry point for routing requests to backend services.
+
+- **Inventory Service (`inventory-service/`)**
   - Manages vendors, products, and purchase orders.
   - Uses a PostgreSQL database for persistence.
 
 - **Loyalty Program Service (`loyalty-program-service/`)**
-
   - Manages customer accounts and loyalty rewards.
   - Uses a separate PostgreSQL database for persistence.
 
 - **Point of Sale (POS) Service (`point-of-sale-service/`)**
-
   - Handles sales transactions, registers, and employees.
   - Uses another PostgreSQL database for persistence.
 
 - **Docker Compose (`docker-compose.yml`)**
-
-  - Orchestrates all microservices, their databases, and environment configurations.
-
-- **Security Service (Future Work) (`csi-5347-course-project-security/`)**
-
-  - A planned service for implementing authentication and authorization using **Keycloak**.
+  - Orchestrates the microservices, databases, and supporting infrastructure.
 
 - **Submission Artifacts (`submission-artifacts/`)**
   - Contains documentation and required artifacts for the project submission.
@@ -66,29 +66,32 @@ cd csi-5347-course-project
 If the repository was already cloned without submodules:
 
 ```bash
-git submodule update --init
+git submodule sync --recursive
+git submodule update --init --recursive
 ```
 
-To pull updates from all submodules:
+To pull updates from the parent repository and synchronize submodules:
 
 ```bash
-git submodule update --recursive --remote
+git pull --recurse-submodules
+git submodule update --init --recursive
 ```
 
 ---
 
 ## Project Structure
 
-```
+```text
 ./csi-5347-course-project
 │── configuration-server/        # Spring Cloud Config Server
 │── configuration-repository/    # External configuration files
 │── inventory-service/           # Inventory management microservice
 │── loyalty-program-service/     # Loyalty program microservice
 │── point-of-sale-service/       # POS system microservice
-│── csi-5347-course-project-security/ # Planned security service (Keycloak)
+│── service-discovery/           # Eureka service discovery server
+│── gateway-server/              # API gateway / request routing
 │── submission-artifacts/        # Documentation and submission files
-│── docker-compose.yml           # Docker Compose setup for running all services
+│── docker-compose.yml           # Docker Compose setup for running the system
 ```
 
 ---
@@ -100,6 +103,13 @@ Each microservice can be compiled separately, or all can be built at once.
 To build all services at once:
 
 ```bash
+mvn clean package spring-boot:build-image -DskipTests
+```
+
+To build an individual service, navigate to its directory and run Maven there. For example:
+
+```bash
+cd inventory-service
 mvn clean package spring-boot:build-image -DskipTests
 ```
 
@@ -122,6 +132,8 @@ This will:
 - Start the **Configuration Server** at port `8071`.
 - Start **PostgreSQL instances** for each microservice (`5432`, `5433`, `5434`).
 - Start the **Inventory Service** (`8080`), **Loyalty Program Service** (`8081`), and **POS Service** (`8082`).
+- Start the **Gateway Server** at port `8072`.
+- Start supporting infrastructure defined in `docker-compose.yml`, including **Keycloak**.
 
 To stop all running containers:
 
@@ -139,17 +151,17 @@ docker logs -f <container_name>
 
 ## Configuration Management
 
-The microservices retrieve their configurations from the **Configuration Server** (`configuration-server/`), which in turn loads properties from the **Configuration Git Repository** (`https://github.com/Matt-Hays/configuration-repository.git`).
+The microservices retrieve their configurations from the **Configuration Server** (`configuration-server/`), which in turn loads properties from the **Configuration Repository** (`configuration-repository/`).
 
 To access the configuration properties for a service, make a GET request to:
 
-```
+```text
 http://localhost:8071/{application}/{profile}
 ```
 
 For example, to fetch configurations for the **Inventory Service** in the `dev` profile:
 
-```
+```text
 http://localhost:8071/inventory-service/dev
 ```
 
@@ -166,20 +178,20 @@ mvn test
 For individual services, navigate to the service directory and run:
 
 ```bash
-cd inventory-service && mvn test
+cd inventory-service
+mvn test
 ```
 
 ---
 
-## Planned Features
+## Observability and Security
 
-- **Security Implementation**
+- **Keycloak**
+  - Used for authentication and authorization.
+  - Started as part of the Docker Compose environment.
 
-  - The `csi-5347-course-project-security/` module will integrate **Keycloak** for authentication and authorization.
+- **Spring Cloud Eureka**
+  - Used for service discovery between distributed services.
 
-- **Enhanced Service Discovery and Load Balancing**
-
-  - Future work may introduce **Spring Cloud Eureka** for service discovery.
-
-- **Logging and Monitoring**
-  - Plans to integrate centralized logging using **ELK Stack** (Elasticsearch, Logstash, Kibana) or **Prometheus/Grafana**.
+- **ELK Stack and Zipkin**
+  - Used for centralized logging and distributed tracing.
