@@ -83,16 +83,16 @@ git submodule update --init --recursive
 
 ```text
 ./csi-5347-course-project
-│── configuration-server/        # Spring Cloud Config Server
-│── configuration-repository/    # External configuration files
-│── inventory-service/           # Inventory management microservice
-│── loyalty-program-service/     # Loyalty program microservice
-│── point-of-sale-service/       # POS system microservice
-│── service-discovery/           # Eureka service discovery server
-│── gateway-server/              # API gateway / request routing
+│── configuration-server/                 # Spring Cloud Config Server
+│── configuration-repository/             # External configuration files
+│── inventory-service/                    # Inventory management microservice
+│── loyalty-program-service/              # Loyalty program microservice
+│── point-of-sale-service/                # POS system microservice
+│── service-discovery/                    # Eureka service discovery server
+│── gateway-server/                       # API gateway / request routing
 │── gatling-maven-plugin-demo-java-main/  # Gatling stress/performance tests
-│── submission-artifacts/        # Documentation and submission files
-│── docker-compose.yml           # Docker Compose setup for running the system
+│── submission-artifacts/                 # Documentation and submission files
+│── docker-compose.yml                    # Docker Compose setup for running the system
 ```
 
 ---
