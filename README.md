@@ -9,8 +9,8 @@ This repository uses Git submodules because each service is maintained as an ind
 Since this repository contains multiple submodules, it should be cloned using the following command:
 
 ```bash
-git clone --recurse-submodules https://github.com/Matt-Hays/csi-5347-course-project.git
-cd csi-5347-course-project
+git clone --recurse-submodules https://github.com/Matt-Hays/spring-based-microservices.git
+cd spring-based-microservices
 ```
 
 ---
@@ -70,8 +70,8 @@ This project implements a microservices-based distributed system with the follow
 Since this repository contains multiple submodules, it should be cloned using the following command:
 
 ```bash
-git clone --recurse-submodules https://github.com/Matt-Hays/csi-5347-course-project.git
-cd csi-5347-course-project
+git clone --recurse-submodules https://github.com/Matt-Hays/spring-based-microservices.git
+cd spring-based-microservices
 ```
 
 If the repository was already cloned without submodules:
@@ -93,7 +93,7 @@ git submodule update --init --recursive
 ## Project Structure
 
 ```text
-./csi-5347-course-project
+./spring-based-microservices
 │── configuration-server/                 # Spring Cloud Config Server
 │── configuration-repository/             # External configuration files
 │── inventory-service/                    # Inventory management microservice
