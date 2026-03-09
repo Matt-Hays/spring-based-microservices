@@ -2,6 +2,17 @@
 
 This project is a distributed systems implementation for the CSI 5347 course. It consists of multiple microservices that interact through REST APIs and shared configurations. The system includes an **Inventory Service**, a **Loyalty Program Service**, a **Point of Sale (POS) Service**, **service discovery with Eureka**, centralized routing through a **Gateway Server**, and authentication/authorization using **Keycloak**. The project is containerized using **Docker** and can be orchestrated through **Docker Compose** for testing and deployment.
 
+## Reviewer Instructions
+
+This repository uses Git submodules because each service is maintained as an independent codebase while the root repository provides a centralized view of the full distributed system.
+
+Since this repository contains multiple submodules, it should be cloned using the following command:
+
+```bash
+git clone --recurse-submodules https://github.com/Matt-Hays/csi-5347-course-project.git
+cd csi-5347-course-project
+```
+
 ---
 
 ## Table of Contents
